@@ -15,7 +15,7 @@
 #define TRACE 1
 #endif
 
-static int depth = 0;
+static int depth = 0; // used only for pretty indentation in the trace
 
 static void indent(void){
 #if TRACE
@@ -23,20 +23,21 @@ static void indent(void){
 #endif
 }
 
+/* factorial(n) = n * factorial(n-1), with factorial(0) = 1 */
 uint64_t factorial(uint64_t n){
 #if TRACE
     indent(); printf("call factorial(%" PRIu64 ")\n", n);
     depth++;
 #endif
-    if (n <= 1){
+    if (n <= 1){ // base case: stop recursion
 #if TRACE
         depth--;
         indent(); printf("return 1  (base case for %" PRIu64 ")\n", n);
 #endif
         return 1;
     }
-    uint64_t sub = factorial(n-1);
-    uint64_t res = n * sub;
+    uint64_t sub = factorial(n-1); // recursive call
+    uint64_t res = n * sub; // combine result on the way back up
 #if TRACE
     depth--;
     indent(); printf("return %" PRIu64 "  (=%" PRIu64 " * %" PRIu64 ")\n", res, n, sub);
@@ -50,7 +51,7 @@ int64_t recursive_multiply(int64_t a, int64_t b){
     indent(); printf("call recursive_multiply(%" PRId64 ", %" PRId64 ")\n", a, b);
     depth++;
 #endif
-    if (b == 0){
+    if (b == 0){ // base case: anything times 0 is 0
 #if TRACE
         depth--;
         indent(); printf("return 0  (base case)\n");
@@ -66,8 +67,9 @@ int64_t recursive_multiply(int64_t a, int64_t b){
     return res;
 }
 
+/* main = driver program that calls the recursive functions */
 int main(int argc, char** argv){
-    uint64_t n = 5;
+    uint64_t n = 5; // default value for factorial
     if (argc > 1) n = strtoull(argv[1], NULL, 10);
 
     printf("=== Recursion Demo ===\n");
